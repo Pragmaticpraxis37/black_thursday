@@ -1,7 +1,14 @@
 {
   "Unit Tests": {
     "coverage": {
+      "/Users/kyleschulz/turing/black_thursday/lib/sales_engine.rb": {
+        "lines": [
+          1,
+          null,
+          null
+        ]
+      }
     },
-    "timestamp": 1609792194
+    "timestamp": 1609796910
   }
 }
