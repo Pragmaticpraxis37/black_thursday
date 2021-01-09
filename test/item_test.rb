@@ -38,6 +38,7 @@ class ItemTest < Minitest::Test
   def test_description_returns_description
     item_one = @engine.items.all.first
     assert_equal String, item_one.description.class
+    require "pry"; binding.pry
     assert_equal 2236, item_one.description.length
   end
 

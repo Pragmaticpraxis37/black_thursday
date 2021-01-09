@@ -4,7 +4,6 @@ require 'bigdecimal/util'
 require 'time'
 require "csv"
 
-
 class ItemRepository
   attr_reader :filename,
               :parent,
