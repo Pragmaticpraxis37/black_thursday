@@ -179,4 +179,38 @@ class SalesAnalyst
   def invoice_status(status)
     ((invoice_status_collection(status) / all_collection_count(@parent.invoices).to_f) * 100).round(2)
   end
+
+  def merchants_with_pending_invoices
+    # pending = @parent.invoices.find_all_by_status(:pending)
+    # merchants = []
+    # pending.each do |invoice|
+    #   merchants << @parent.invoices.find_all_by_merchant_id(invoice.merchant_id)
+    # end
+    #
+    # hash = @parent.transactions.all.group_by do |transaction|
+    #   transaction.invoice_id
+    # end
+    # accu = []
+    # hash.each do |key, value|
+    #   accu << key if !value.any?(:success)
+    # end
+    # accu
+    # other_accu = []
+    # merchant = accu.map do |invoice_id|
+    #   @parent.invoices.all.find_all do |invoice|
+    #     other_accu << invoice.merchant_id if invoice_id == invoice.merchant_id
+    #   end
+    #   require "pry"; binding.pry
+    # end
+    #
+    #   #iterate through the hash, iterate throught value array use.any? :success
+    # # merchants = pending.map do |invoice|
+    # #   @parent.invoices.find_all_by_merchant_id(invoice.merchant_id)
+    # #   end
+    # merchants
+    # require "pry"; binding.pry
+  end
+
+
+
 end
