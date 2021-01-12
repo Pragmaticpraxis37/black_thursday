@@ -156,4 +156,11 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 18, actual.length
     assert_equal Merchant, actual.first.class
   end
+
+  def test_revenue_by_merchant
+    actual = @sales_analyst.revenue_by_merchant(12334194)
+
+    assert_equal BigDecimal.new(actual), actual
+    assert_equal BigDecimal, actual.class  
+  end
 end
