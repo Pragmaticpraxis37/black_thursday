@@ -137,4 +137,23 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 467, actual.length
     assert_equal Merchant, actual.first.class
   end
+
+  def test_merchant_with_only_one_item
+    actual = @sales_analyst.merchants_with_only_one_item
+
+    assert_equal 243, actual.length
+    assert_equal Merchant, actual.first.class
+  end
+
+  def test_merchant_with_only_one_iem_registered_in_month
+    actual = @sales_analyst.merchants_with_only_one_item('March')
+
+    assert_equal 21, actual.length
+    assert_equal Merchant, actual.first.class
+
+    actual = @sales_analyst.merchants_with_only_one_item('June')
+
+    assert_equal 18, actual.length
+    assert_equal Merchant, actual.first.class
+  end
 end
