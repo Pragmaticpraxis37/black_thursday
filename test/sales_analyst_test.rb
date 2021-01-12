@@ -130,4 +130,11 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 56.95, @sales_analyst.invoice_status(:shipped)
     assert_equal 13.5, @sales_analyst.invoice_status(:returned)
   end
+
+  def test_merchants_with_pending_invoices
+    actual = @sales_analyst.merchants_with_pending_invoices
+
+    assert_equal 467, actual.length
+    assert_equal Merchant, actual.first.class
+  end
 end
