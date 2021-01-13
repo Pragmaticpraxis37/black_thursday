@@ -181,16 +181,31 @@ class SalesAnalyst
   #   end
   # end
 
-  def merchants_by_total_revenue
-    {234 => 354.8}.each do |id, amount|
-      new_hash[@parent.merchants.find_by_id(id)] = amount
+  def group_invoice_id_by_invoice_total
+    invoice_ids_by_successful_transaction.reduce({}) do |acc, id|
+      acc[id] = invoice_total(id)
+      acc
     end
+  end
+
+  def find_merchant_by_invoice_id(id)
+    @parent.invoices.all.map do |invoice|
+      invoice.merchant_id if invoice.id == id
+    end.compact!
+  end
+
+  def merchants_by_total_revenue
+    merchants_total = {}
+    group_invoice_id_by_invoice_total.each do |id, amount|
+      merchants_total[find_merchant_by_invoice_id(id)[0]] = amount
+    end
+    merchants_total
   end
 
   def invoice_ids_by_successful_transaction
     @parent.transactions.all.map do |transaction|
       transaction.invoice_id if transaction.result == :success
-    end.compact!
+    end.uniq.compact!
   end
 
   def total_revenue_by_date(date)
@@ -205,7 +220,15 @@ class SalesAnalyst
   end
 
   def top_revenue_earners(amount=20)
+    top_selling_merchants_sorted = merchants_by_total_revenue.sort_by { |merchant_id, invoice_total| -invoice_total }
+    i = 0
+    top_merchants = []
+    while i < amount
+      top_merchants << @parent.merchants.find_by_id(top_selling_merchants_sorted[i][0])
+      i += 1
+    end
     require "pry"; binding.pry
+    top_merchants
   end
 
 
