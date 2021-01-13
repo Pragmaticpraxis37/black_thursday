@@ -167,6 +167,7 @@ class SalesAnalyst
   end
 
 
+
   # def generate_all_invoices_by_id
   #   invoice_ids_by_successful_transaction.group_by do |id|
   #     @parent.invoice_items.find_all_by_invoice_id(id)
@@ -205,6 +206,23 @@ class SalesAnalyst
 
   def top_revenue_earners(amount=20)
     require "pry"; binding.pry
+  end
+
+
+  def invoice_paid_in_full?(invoice_id)
+    transactions = parent.transactions.find_all_by_invoice_id(invoice_id)
+    return false if transactions.empty?
+    transactions.all? do |transaction|
+      transaction.result == :success
+    end
+  end
+
+
+  def invoice_total(invoice_id)
+    invoice_items = parent.invoice_items.find_all_by_invoice_id(invoice_id)
+    invoice_items.sum do |invoice_item|
+      invoice_item.quantity * invoice_item.unit_price
+    end
   end
 
 end

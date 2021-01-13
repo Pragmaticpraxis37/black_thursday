@@ -137,6 +137,7 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 13.5, @sales_analyst.invoice_status(:returned)
   end
 
+<<<<<<< HEAD
   def test_it_returns_total_revenue_by_given_date
     date = Time.parse("2009-02-07")
     assert_equal 21067.77, @sales_analyst.total_revenue_by_date(date)
@@ -147,5 +148,29 @@ class SalesAnalystTest < Minitest::Test
     assert_equal top_merchant_id, @sales_analyst.top_revenue_earners(5).first.id
     assert_equal 5, @sales_analyst.top_revenue_earners(5).length
     assert_equal 8, @sales_analyst.top_revenue_earners(8).length
+=======
+  def test_paid_in_full_returns_true_if_the_invoice_is_paid_in_full
+    expected = @sales_analyst.invoice_paid_in_full?(1)
+
+    assert_equal true, expected
+
+    expected = @sales_analyst.invoice_paid_in_full?(200)
+
+    assert_equal true, expected
+
+    expected = @sales_analyst.invoice_paid_in_full?(203)
+    assert_equal false, expected
+
+
+    expected = @sales_analyst.invoice_paid_in_full?(204)
+    assert_equal false, expected
+  end
+
+  def test_total_returns_total_dollar_amount
+    actual = @sales_analyst.invoice_total(1)
+
+    assert_equal 21067.77, actual
+    assert_equal BigDecimal, actual.class
+>>>>>>> main
   end
 end
