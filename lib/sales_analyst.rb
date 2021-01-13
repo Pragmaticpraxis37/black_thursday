@@ -121,21 +121,7 @@ class SalesAnalyst
 
   def invoices_by_days
     @parent.invoices.all.group_by do |invoice|
-      if invoice.created_at.wday == 1
-        "Monday"
-      elsif invoice.created_at.wday == 2
-        "Tuesday"
-      elsif invoice.created_at.wday == 3
-        "Wednesday"
-      elsif invoice.created_at.wday == 4
-        "Thursday"
-      elsif invoice.created_at.wday == 5
-        "Friday"
-      elsif invoice.created_at.wday == 6
-        "Saturday"
-      elsif invoice.created_at.wday == 0
-        "Sunday"
-      end
+      invoice.created_at.strftime("%A")
     end
   end
 
@@ -179,4 +165,36 @@ class SalesAnalyst
   def invoice_status(status)
     ((invoice_status_collection(status) / all_collection_count(@parent.invoices).to_f) * 100).round(2)
   end
+
+
+  # def generate_all_invoices_by_id
+  #   invoice_ids_by_successful_transaction.group_by do |id|
+  #     @parent.invoice_items.find_all_by_invoice_id(id)
+  #   end
+  # end
+
+
+  # def invoice_ids_by_successful_transaction
+  #   transactions_by_result.map do |transaction|
+  #     transaction.invoice_id
+  #   end
+  # end
+
+  # def transactions_by_result
+  #   @parent.transactions.all.find_all do |transaction|
+  #     transaction.result == :success
+  #   end
+  # end
+
+  def total_revenue_by_date(date)
+    invoice = @parent.invoices.all.find_all do |invoice|
+      invoice.created_at.strftime("%F") == date.strftime("%F")
+      end
+    receipts = @parent.invoice_items.find_all_by_invoice_id(invoice[0].id)
+    total = receipts.sum do |invoice|
+      invoice.unit_price * invoice.quantity
+    end
+    total
+  end
+
 end
