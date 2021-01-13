@@ -2,13 +2,19 @@ require './test/test_helper'
 
 class SalesAnalystTest < Minitest::Test
   def setup
-    item_path = "./data/items.csv"
-    merchant_path = "./data/merchants.csv"
-    invoice_path = "./data/invoices.csv"
+    item_path          = "./data/items.csv"
+    merchant_path      = "./data/merchants.csv"
+    invoice_path       = "./data/invoices.csv"
+    invoice_item_path  = "./data/invoice_items.csv"
+    customer_path      = "./data/customers.csv"
+    transaction_path   = "./data/transactions.csv"
     arguments = {
                   :items     => item_path,
                   :merchants => merchant_path,
-                  :invoices  => invoice_path
+                  :invoices  => invoice_path,
+                  :invoice_items => invoice_item_path,
+                  :customers     => customer_path,
+                  :transactions => transaction_path
                 }
     @se = SalesEngine.from_csv(arguments)
     @sales_analyst = @se.analyst
@@ -129,5 +135,10 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 29.55, @sales_analyst.invoice_status(:pending)
     assert_equal 56.95, @sales_analyst.invoice_status(:shipped)
     assert_equal 13.5, @sales_analyst.invoice_status(:returned)
+  end
+
+  def test_it_returns_total_revenue_by_given_date
+    date = Time.parse("2009-02-07")
+    assert_equal 21067.77, @sales_analyst.total_revenue_by_date(date)
   end
 end
