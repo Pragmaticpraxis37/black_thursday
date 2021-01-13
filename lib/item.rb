@@ -20,7 +20,7 @@ class Item
     @unit_price  = (args[:unit_price].to_d) / 100
     @created_at  = Time.parse(args[:created_at].to_s)
     @updated_at  = Time.parse(args[:updated_at].to_s)
-    @merchant_id = args[:merchant_id].to_s
+    @merchant_id = args[:merchant_id].to_i
     @parent = parent
   end
 

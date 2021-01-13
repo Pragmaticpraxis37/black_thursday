@@ -104,7 +104,6 @@ class InvoiceRepositoryTest < MiniTest::Test
   end
 
   def test_update_cannot_update_id_customer_id_merchant_id_or_created_at
-    skip
     attributes = {
                   :customer_id => 7,
                   :merchant_id => 8,

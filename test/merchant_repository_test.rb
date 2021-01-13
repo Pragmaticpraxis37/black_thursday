@@ -3,17 +3,22 @@ require './test/test_helper'
 class MerchantRepositoryTest < Minitest::Test
 
   def setup
-    item_path = "./data/items.csv"
-    merchant_path = "./data/merchants.csv"
-    invoice_path = "./data/invoices.csv"
+    item_path          = "./data/items.csv"
+    merchant_path      = "./data/merchants.csv"
+    invoice_path       = "./data/invoices.csv"
+    invoice_item_path  = "./data/invoice_items.csv"
+    customer_path      = "./data/customers.csv"
+    transaction_path   = "./data/transactions.csv"
     arguments = {
                   :items     => item_path,
                   :merchants => merchant_path,
-                  :invoices  => invoice_path
+                  :invoices  => invoice_path,
+                  :invoice_items => invoice_item_path,
+                  :customers     => customer_path,
+                  :transactions => transaction_path
                 }
     @se = SalesEngine.from_csv(arguments)
     @mr = @se.merchants
-
   end
 
   def test_it_exists_and_has_attributes

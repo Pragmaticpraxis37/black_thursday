@@ -1,74 +1,34 @@
-require_relative './test_helper'
-# require './lib/item_repository'
-# require './lib/item'
-require 'time'
-#this is a line to test to see if anything has changed
-class ItemTest < Minitest::Test
+require_relative 'test_helper'
 
+class ItemTest < Minitest::Test
   def setup
-    item_path          = "./data/items.csv"
-    merchant_path      = "./data/merchants.csv"
-    invoice_path       = "./data/invoices.csv"
-    invoice_item_path  = "./data/invoice_items.csv"
-    customer_path      = "./data/customers.csv"
-    transaction_path   = "./data/transactions.csv"
-    arguments = {
-                  :items     => item_path,
-                  :merchants => merchant_path,
-                  :invoices  => invoice_path,
-                  :invoice_items => invoice_item_path,
-                  :customers     => customer_path,
-                  :transactions => transaction_path
-                }
-    @engine = SalesEngine.from_csv(arguments)
+    parent = mock('parent')
+    @i = Item.new({
+                   id:           34,
+                   name:         "Spoon",
+                   description:  "You can use it to eat soup, etc.",
+                   unit_price:   BigDecimal.new(11.30,4).to_d * 100,
+                   created_at:   Time.now,
+                   updated_at:   Time.now,
+                   merchant_id:  67
+    }, parent)
   end
 
   def test_it_exists
-    assert_instance_of Item, @engine.items.all.first
+    assert_instance_of Item, @i
   end
 
-  def test_id_returns_id
-    item_one = @engine.items.all.first
-    assert_equal 263395237, item_one.id
-    item_two = @engine.items.all.last
-    assert_equal 263567474, item_two.id
-  end
-
-  def test_name_returns_name
-    item_one = @engine.items.all.first
-    assert_equal "510+ RealPush Icon Set", item_one.name
-    item_two = @engine.items.all.last
-    assert_equal "Minty Green Knit Crochet Infinity Scarf", item_two.name
-  end
-
-  def test_description_returns_description
-    item_one = @engine.items.all.first
-    assert_equal String, item_one.description.class
-    assert_equal 2236, item_one.description.length
-  end
-
-  def test_unit_price_returns_unit_price
-    item_one = @engine.items.all.first
-    assert_equal 12.00, item_one.unit_price
-    assert_equal BigDecimal, item_one.unit_price.class
-  end
-
-  def test_created_at_returns_time_item_was_created_at
-    item_one = @engine.items.all.first
-    time = Time.parse("2016-01-11 09:34:06 UTC")
-    assert_equal time, item_one.created_at
-  end
-
-  def test_updated_at_returns_the_time_it_was_last_updated
-    item_one = @engine.items.all.first
-    assert_equal Time.parse("2007-06-04 21:35:10 UTC"), item_one.updated_at
-    assert_equal Time, item_one.updated_at.class
+  def test_it_has_attributes
+    assert_equal 34, @i.id
+    assert_equal "Spoon", @i.name
+    assert_equal "You can use it to eat soup, etc.", @i.description
+    assert_equal 11.30, @i.unit_price
+    assert_operator Time.now.to_s, :==, @i.created_at.to_s
+    assert_operator Time.now.to_s, :==, @i.updated_at.to_s
+    assert_equal 67, @i.merchant_id
   end
 
   def test_unit_price_to_dollars_returns_price_as_float
-    expected = @engine.items.find_by_id(263397059)
-    assert_equal 130.0, expected.unit_price_to_dollars
-    assert_equal Float, expected.unit_price_to_dollars.class
+    assert_equal 11.30, @i.unit_price_to_dollars
   end
-
 end

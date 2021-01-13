@@ -1,18 +1,14 @@
-require './test/test_helper'
+require_relative 'test_helper'
 
 class MerchantTest < Minitest::Test
   def setup
-    item_path = "./data/items.csv"
-    merchant_path = "./data/merchants.csv"
-    invoice_path = "./data/invoices.csv"
-    arguments = {
-                  :items     => item_path,
-                  :merchants => merchant_path,
-                  :invoices  => invoice_path
-                }
-    @se = SalesEngine.from_csv(arguments)
-    @mr = @se.merchants
-    @merchant = @mr.all.first
+    parent = mock('parent')
+    @merchant = Merchant.new({
+                              id: 7,
+                              name: "Sherry's Tasty Desserts",
+                              created_at: Time.now,
+                              updated_at: Time.now
+                              }, parent)
   end
 
   def test_it_exists
@@ -20,7 +16,15 @@ class MerchantTest < Minitest::Test
   end
 
   def test_it_has_attributes
-    assert_equal 12334105, @merchant.id
-    assert_equal "Shopin1901", @merchant.name
+    assert_equal 7, @merchant.id
+    assert_equal "Sherry's Tasty Desserts", @merchant.name
+    assert_operator Time.now.to_s, :==, @merchant.created_at.to_s
+    assert_operator Time.now.to_s, :==, @merchant.updated_at.to_s
+  end
+
+  def test_it_can_update
+    update_info = {id: 7, name: "Olivia's Tasty Desserts"}
+    @merchant.update(update_info)
+    assert_equal "Olivia's Tasty Desserts", @merchant.name
   end
 end
