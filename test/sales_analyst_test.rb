@@ -138,7 +138,7 @@ class SalesAnalystTest < Minitest::Test
   end
 
   def test_merchants_with_pending_invoices
-    skip 
+    skip
     actual = @sales_analyst.merchants_with_pending_invoices
 
     assert_equal 467, actual.length

@@ -211,6 +211,21 @@ class SalesAnalyst
     # require "pry"; binding.pry
   end
 
+  def merchants_with_only_one_item
+    items_by_merchant_id = @parent.items.all.group_by do |item|
+      item.merchant_id
+    end
+    one_itemed_merchants = items_by_merchant_id.select do |key, value|
+      value.length == 1
+    end
 
+    merchant_array = one_itemed_merchants.keys.map do |merchant_id|
 
+      @parent.merchants.find_by_id(merchant_id)
+    end
+    merchant_array
+  end
+    #result will be hash where key is merchant_id, value is array of item objects that the merchants sell
+    #iterate through that hash, select all merchant_id's that == 1
+    #iterate through the merchant_id array, and turn each one back into the merchant object
 end

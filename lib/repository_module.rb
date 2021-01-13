@@ -5,7 +5,7 @@ module Repository
 
   def find_by_id(id)
     @collection.find do |element|
-      element.id.to_i == id
+      element.id.to_i == id.to_i
     end
   end
 
