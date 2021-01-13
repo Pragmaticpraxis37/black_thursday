@@ -138,7 +138,6 @@ class SalesAnalystTest < Minitest::Test
   end
 
   def test_merchants_with_pending_invoices
-    skip
     actual = @sales_analyst.merchants_with_pending_invoices
 
     assert_equal 467, actual.length
@@ -152,7 +151,7 @@ class SalesAnalystTest < Minitest::Test
     assert_equal Merchant, actual.first.class
   end
 
-  def test_merchant_with_only_one_iem_registered_in_month
+  def test_merchant_with_only_one_item_registered_in_month
     actual = @sales_analyst.merchants_with_only_one_item('March')
 
     assert_equal 21, actual.length

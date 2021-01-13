@@ -39,6 +39,11 @@ class MerchantRepository
     update_merchant.update(name_hash[:name]) if !name_hash[:name].nil?
   end
 
+  def merchants_with_pending_invoices
+    all.reject do |merchant|
+      merchant.pending_invoices.empty?
+    end
+  end
   # def delete(id)
   #   delete = find_by_id(id)
   #   @collection.delete(delete)

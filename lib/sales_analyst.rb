@@ -181,6 +181,12 @@ class SalesAnalyst
   end
 
   def merchants_with_pending_invoices
+    @parent.merchants.merchants_with_pending_invoices
+
+    #iterate through transactions, group_by transaction_id
+    #result would be success
+    #
+
     # pending = @parent.invoices.find_all_by_status(:pending)
     # merchants = []
     # pending.each do |invoice|
@@ -194,21 +200,13 @@ class SalesAnalyst
     # hash.each do |key, value|
     #   accu << key if !value.any?(:success)
     # end
-    # accu
     # other_accu = []
     # merchant = accu.map do |invoice_id|
     #   @parent.invoices.all.find_all do |invoice|
     #     other_accu << invoice.merchant_id if invoice_id == invoice.merchant_id
     #   end
-    #   require "pry"; binding.pry
     # end
-    #
-    #   #iterate through the hash, iterate throught value array use.any? :success
-    # # merchants = pending.map do |invoice|
-    # #   @parent.invoices.find_all_by_merchant_id(invoice.merchant_id)
-    # #   end
     # merchants
-    # require "pry"; binding.pry
   end
 
   def merchants_with_only_one_item
@@ -218,14 +216,32 @@ class SalesAnalyst
     one_itemed_merchants = items_by_merchant_id.select do |key, value|
       value.length == 1
     end
-
     merchant_array = one_itemed_merchants.keys.map do |merchant_id|
-
       @parent.merchants.find_by_id(merchant_id)
     end
     merchant_array
   end
-    #result will be hash where key is merchant_id, value is array of item objects that the merchants sell
-    #iterate through that hash, select all merchant_id's that == 1
-    #iterate through the merchant_id array, and turn each one back into the merchant object
+
+  def merchants_with_only_one_item(month)
+    merchants_by_id = @parent.items.all.group_by do |item|
+      item.merchant_id
+    end
+    one_itemed_merchants = merchants_by_id.select do |key, value|
+      value.length == 1
+    end
+    array = one_itemed_merchants.reduce([]) do |array, value|
+      array << value[1..-1].flatten!
+    end
+    array.flatten!
+    result = array.group_by do |item|
+      item.created_at.strftime("%B")
+    end
+    require "pry"; binding.pry
+    result
+    #how do we convert the string of month into the created at date?
+    #group by month to get an array of all merchants registered in that month
+    #merchants_with_only_one_item
+  end
+
+
 end

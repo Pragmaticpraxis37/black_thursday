@@ -55,4 +55,8 @@ class InvoiceRepository
     update_invoice.update(attributes) if !attributes[:status].nil?
     update_invoice
   end
+
+  def pending_invoices
+    @invoices.reject(&:paid_in_full?)
+  end
 end

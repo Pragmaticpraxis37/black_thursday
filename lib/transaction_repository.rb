@@ -74,4 +74,10 @@ class TransactionRepository
     delete = find_by_id(id)
     @transactions.delete(delete)
   end
+
+  def paid_in_full?
+    @transactions.any? do |transaction|
+      transaction.result == :success
+    end
+  end 
 end
