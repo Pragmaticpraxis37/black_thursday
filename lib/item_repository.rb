@@ -65,9 +65,4 @@ class ItemRepository
     update_item
   end
 
-  # def delete(id)
-  #   delete = find_by_id(id)
-  #   @collection.delete(delete)
-  # end
-
 end
