@@ -141,4 +141,11 @@ class SalesAnalystTest < Minitest::Test
     date = Time.parse("2009-02-07")
     assert_equal 21067.77, @sales_analyst.total_revenue_by_date(date)
   end
+
+  def test_it_returns_the_top_number_of_merchants_given_ranked_by_revenue
+    top_merchant_id = 12334634
+    assert_equal top_merchant_id, @sales_analyst.top_revenue_earners(5).first.id
+    assert_equal 5, @sales_analyst.top_revenue_earners(5).length
+    assert_equal 8, @sales_analyst.top_revenue_earners(8).length
+  end
 end

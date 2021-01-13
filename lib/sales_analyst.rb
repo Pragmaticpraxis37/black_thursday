@@ -180,11 +180,17 @@ class SalesAnalyst
   #   end
   # end
 
-  # def transactions_by_result
-  #   @parent.transactions.all.find_all do |transaction|
-  #     transaction.result == :success
-  #   end
-  # end
+  def merchants_by_total_revenue
+    {234 => 354.8}.each do |id, amount|
+      new_hash[@parent.merchants.find_by_id(id)] = amount
+    end
+  end
+
+  def invoice_ids_by_successful_transaction
+    @parent.transactions.all.map do |transaction|
+      transaction.invoice_id if transaction.result == :success
+    end.compact!
+  end
 
   def total_revenue_by_date(date)
     invoice = @parent.invoices.all.find_all do |invoice|
@@ -195,6 +201,10 @@ class SalesAnalyst
       invoice.unit_price * invoice.quantity
     end
     total
+  end
+
+  def top_revenue_earners(amount=20)
+    require "pry"; binding.pry
   end
 
 end
