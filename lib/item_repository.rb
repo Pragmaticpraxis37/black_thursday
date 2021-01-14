@@ -46,7 +46,7 @@ class ItemRepository
 
   def find_all_by_merchant_id(merchant_id)
     @collection.find_all do |item|
-      item.merchant_id == merchant_id.to_s
+      item.merchant_id == merchant_id.to_i
     end
   end
 
@@ -64,10 +64,5 @@ class ItemRepository
     update_item.update(attributes) if !attributes[:unit_price].nil?
     update_item
   end
-
-  # def delete(id)
-  #   delete = find_by_id(id)
-  #   @collection.delete(delete)
-  # end
 
 end

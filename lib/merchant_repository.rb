@@ -43,5 +43,4 @@ class MerchantRepository
     update_merchant.update(attributes) if !attributes[:name].nil?
     update_merchant
   end
-
 end
