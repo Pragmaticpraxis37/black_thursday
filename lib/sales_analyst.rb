@@ -166,21 +166,6 @@ class SalesAnalyst
     ((invoice_status_collection(status) / all_collection_count(@parent.invoices).to_f) * 100).round(2)
   end
 
-
-
-  # def generate_all_invoices_by_id
-  #   invoice_ids_by_successful_transaction.group_by do |id|
-  #     @parent.invoice_items.find_all_by_invoice_id(id)
-  #   end
-  # end
-
-
-  # def invoice_ids_by_successful_transaction
-  #   transactions_by_result.map do |transaction|
-  #     transaction.invoice_id
-  #   end
-  # end
-
   def group_invoice_id_by_invoice_total
     invoice_ids_by_successful_transaction.reduce({}) do |acc, id|
       acc[id] = invoice_total(id)
