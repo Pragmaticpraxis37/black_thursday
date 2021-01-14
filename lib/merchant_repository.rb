@@ -1,6 +1,8 @@
 require_relative "merchant"
 require_relative 'repository_module'
 require "csv"
+require 'time'
+
 
 class MerchantRepository
   include Repository
@@ -18,7 +20,7 @@ class MerchantRepository
   def generate_merchants(filename)
     merchants = CSV.open filename, headers: true, header_converters: :symbol
     merchants.each do |row|
-      @collection << Merchant.new(row[:id], row[:name], self)
+      @collection << Merchant.new(row, self)
     end
   end
 
@@ -28,14 +30,17 @@ class MerchantRepository
     end
   end
 
-  def create(hash)
-    new_merchant = Merchant.new(highest_id_plus_one, hash[:name], self)
+  def create(attributes)
+    attributes[:id] = highest_id_plus_one.to_s
+    attributes[:name]
+    new_merchant = Merchant.new(attributes, self)
     @collection << new_merchant
     new_merchant
   end
 
-  def update(id, name_hash)
+  def update(id, attributes)
     update_merchant = find_by_id(id)
-    update_merchant.update(name_hash[:name]) if !name_hash[:name].nil?
+    update_merchant.update(attributes) if !attributes[:name].nil?
+    update_merchant
   end
 end
