@@ -46,7 +46,7 @@ class ItemRepository
 
   def find_all_by_merchant_id(merchant_id)
     @collection.find_all do |item|
-      item.merchant_id == merchant_id.to_s
+      item.merchant_id == merchant_id.to_i
     end
   end
 
