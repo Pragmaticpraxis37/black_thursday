@@ -176,4 +176,10 @@ class SalesAnalystTest < Minitest::Test
     assert_equal Merchant, actual.first.class
   end
 
+
+  def test_merchant_with_only_one_item
+    actual = @sales_analyst.merchants_with_only_one_item
+    assert_equal 243, actual.length
+    assert_equal Merchant, actual.first.class
+  end
 end
