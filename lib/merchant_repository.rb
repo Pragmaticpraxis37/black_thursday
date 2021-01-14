@@ -38,13 +38,4 @@ class MerchantRepository
     update_merchant = find_by_id(id)
     update_merchant.update(name_hash[:name]) if !name_hash[:name].nil?
   end
-
-  # def delete(id)
-  #   delete = find_by_id(id)
-  #   @collection.delete(delete)
-  # end
-
-  # def inspect
-  # "#<#{self.class} #{@collection.size} rows>"
-  # end
 end
