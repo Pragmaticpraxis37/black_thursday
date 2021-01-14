@@ -212,10 +212,8 @@ class SalesAnalyst
       top_merchants << @parent.merchants.find_by_id(top_selling_merchants_sorted[i][0])
       i += 1
     end
-    require "pry"; binding.pry
     top_merchants
   end
-
 
   def invoice_paid_in_full?(invoice_id)
     transactions = parent.transactions.find_all_by_invoice_id(invoice_id)
@@ -225,12 +223,34 @@ class SalesAnalyst
     end
   end
 
-
   def invoice_total(invoice_id)
     invoice_items = parent.invoice_items.find_all_by_invoice_id(invoice_id)
     invoice_items.sum do |invoice_item|
       invoice_item.quantity * invoice_item.unit_price
     end
   end
+
+  def merchants_with_only_one_item
+   items_by_merchant_id = @parent.items.all.group_by do |item|
+     item.merchant_id
+   end
+   one_itemed_merchants = items_by_merchant_id.select do |key, value|
+     value.length == 1
+   end
+   merchant_array = one_itemed_merchants.keys.map do |merchant_id|
+     @parent.merchants.find_by_id(merchant_id)
+   end
+   merchant_array
+ end
+
+ def merchants_with_only_one_item(month)
+ merchants_by_id = @parent.items.all.group_by { |item| item.merchant_id }
+ one_itemed_merchants = merchants_by_id.select { |key, value| value.length == 1 }
+ array = one_itemed_merchants.reduce([]) { |array, value| array << value[0] }
+ merchant_objects = array.map { |merchant_id| @parent.merchants.find_by_id(merchant_id) }
+ result = merchant_objects.group_by { |merchant| merchant.created_at.strftime("%B") }
+ result[month]
+end
+
 
 end
